@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+  --color-lav1: #fdfbd4;
+  --color-lav2: #bdb96a;
+  --color-lav3: #c1bfff;
+  --color-lav4: #cf6dfc;
+
+  --font-inria: "Inria Sans", sans-serif;
+}
+
+.widget {
+  @apply bg-black/20 w-fit h-fit rounded-2xl
+}
+
+.list-items {
+  @apply flex  w-full
+}
