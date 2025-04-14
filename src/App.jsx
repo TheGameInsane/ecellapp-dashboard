@@ -1,11 +1,24 @@
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { LocalizationProvider, DateCalendar } from "@mui/x-date-pickers"
-import { List, ListItem, Checkbox, ListItemButton, TableContainer, Table, TableBody, TableRow, TableCell, Paper } from "@mui/material"
+import { List, ListItem, Checkbox, ListItemButton, TableContainer, Table, TableBody, TableRow, TableCell, Paper, TablePagination } from "@mui/material"
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import AddTaskIcon from '@mui/icons-material/AddTask';
+import { useState } from "react";
 
 function App() {
+  const [page , setPage] = useState(0)
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+  const mails = [
+    { name: 'Joel George', subject: 'Assignment-2 Graded', timeStamp: `${(new Date(Date.now())).toDateString()}` },
+    { name: 'admin IITM', subject: '10 days vacations approved', timeStamp: `${(new Date(Date.now())).toDateString()}` },
+    { name: 'Joel George', subject: 'Assignment-2 Graded', timeStamp: `${(new Date(Date.now())).toDateString()}` },
+    { name: 'admin IITM', subject: '10 days vacations approved', timeStamp: `${(new Date(Date.now())).toDateString()}` },
+    { name: 'Joel George', subject: 'Assignment-2 Graded', timeStamp: `${(new Date(Date.now())).toDateString()}` },
+    { name: 'admin IITM', subject: '10 days vacations approved', timeStamp: `${(new Date(Date.now())).toDateString()}` },
+    ]
 
   return (
     <>
@@ -42,20 +55,18 @@ function App() {
                 </List>
               </div>
             </div>
-            <div className="widget min-w-150">
+            <div className="widget min-w-150 min-h-95 relative">
               <h1 className="text-2xl p-4"><MailOutlineIcon fontSize="large"/> Mails</h1>
               <TableContainer>
                 <Table>
                   <TableBody>
                     {
-                      [{ name: 'Joel George', subject: 'Assignment-2 Graded', timeStamp: `${(new Date(Date.now())).toDateString()}` },
-                      { name: 'admin IITM', subject: '10 days vacations approved', timeStamp: `${(new Date(Date.now())).toDateString()}` }
-                      ].map((mail) => {
+                      mails.slice(page * 5, page * 5 + 5).map((mail) => {
                         return (
                           <TableRow hover sx={{ cursor: 'pointer' }}>
-                            <TableCell><span className="font-bold">{mail.name}</span></TableCell>
-                            <TableCell>{mail.subject}</TableCell>
-                            <TableCell>{mail.timeStamp}</TableCell>
+                            <TableCell sx={{border: 'none'}}><span className="font-bold">{mail.name}</span></TableCell>
+                            <TableCell sx={{border: 'none'}}>{mail.subject}</TableCell>
+                            <TableCell sx={{border: 'none'}}>{mail.timeStamp}</TableCell>
                           </TableRow>
                         )
                       })
@@ -63,6 +74,7 @@ function App() {
                   </TableBody>
                 </Table>
               </TableContainer>
+              <TablePagination className="absolute right-10 bottom-0" sx={{border: 'none'}} page={page} rowsPerPageOptions={5} count={mails.length} rowsPerPage={5} onPageChange={handleChangePage}/>
             </div>
           </div>
 
