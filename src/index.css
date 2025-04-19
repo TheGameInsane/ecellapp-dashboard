@@ -10,9 +10,5 @@
 }
 
 .widget {
-  @apply bg-black/20 w-fit h-fit rounded-2xl
-}
-
-.list-items {
-  @apply flex w-full
+  @apply bg-black/10 rounded-2xl m-auto mt-10
 }
