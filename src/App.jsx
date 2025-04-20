@@ -26,19 +26,35 @@ function App() {
     { name: 'admin IITM', subject: '10 days vacations approved', timeStamp: `${(new Date(Date.now())).toDateString()}` },
   ]
 
+  const butSx = { position: 'absolute', left: 'calc(50% - 13px)', scale: '1.5', top: 'calc(50% - 13px)', color: 'white' }
+
   return (
     <>
       <div className="flex">
-        <div className="h-screen w-50 bg-amber-200 flex">
-          <div className="bg-gray-100/75 h-[95%] m-5 rounded-full relative">
+        <div className="h-screen w-50 bg-amber-200">
+          <div className="bg-gray-100/75 h-[95%] m-5 rounded-full w-25 flex flex-col justify-between">
 
-            <div className="w-30 h-30 rounded-full bg-black/75 mx-auto relative">
-              <HomeFilledIcon sx={{position: 'absolute', left: 'calc(50% - 14px)', scale: '2', top: 'calc(50% - 14px)', color: 'white'}}/>
+            <div className="bg-black/75 button">
+              <HomeFilledIcon sx={butSx} />
             </div>
 
-            <div className="w-30 h-30 rounded-full bg-black/25 absolute bottom-0">
-              <SettingsIcon sx={{position: 'absolute', left: 'calc(50% - 14px)', scale: '2', top: 'calc(50% - 14px)', color: 'white'}}/>
+            <div>
+              <div className="my-4">
+                {[1, 2, 3].map((i) => {
+                  return (
+                    <div className={`${i==1 ? "bg-black/20" : "bg-black/5"} button`}>
+                      <h1 className="absolute h1b text-2xl font-semibold text-black/50">{i}</h1>
+                    </div>
+                  )
+                })}
+                <hr className="w-[70%] mx-auto my-2" />
+                <h1 className="text-center leading-3.75">W<br />O<br />R<br />K<br />S<br />P<br />A<br />C<br />E<br />S</h1>
+              </div>
+              <div className="rounded-full bg-black/25 button">
+                <SettingsIcon sx={butSx} />
+              </div>
             </div>
+
           </div>
         </div>
 
@@ -47,10 +63,10 @@ function App() {
           <div className="col-start-1 col-end-3 row-start-1 row-end-3 m-auto">
             <h1 className="font-inria text-6xl font-semibold text-gray-900"><span className="italic font-normal">Hola</span> Vinay!</h1>
             <p className="py-2 text-2xl">Wednesday, 25th July<br /><SunnyIcon /> 29°C, Thane</p>
-            <h2 className="text-4xl "><AccessTimeFilledIcon/> 13:24</h2>
+            <h2 className="text-4xl "><AccessTimeFilledIcon /> 13:24</h2>
           </div>
 
-          <div className="widget min-w-200 min-h-95 relative row-start-3 col-span-2 col-end-5">
+          <div className="widget min-h-95 relative row-start-3 col-span-2 col-end-5">
             <h1 className="text-2xl p-4"><MailOutlineIcon fontSize="large" /> Mails</h1>
             <TableContainer>
               <Table>
@@ -72,13 +88,13 @@ function App() {
             <TablePagination className="absolute right-10 bottom-0" sx={{ border: 'none' }} page={page} rowsPerPageOptions={5} count={mails.length} rowsPerPage={5} onPageChange={handleChangePage} />
           </div>
 
-          <div className="widget">
+          <div className="widget w-[90%]">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateCalendar/>
+              <DateCalendar sx={{ width: '100%' }} />
             </LocalizationProvider>
           </div>
 
-          <div className="widget min-w-75">
+          <div className="widget">
             <h1 className="text-2xl pt-2"><TaskAltIcon fontSize="large" className="m-2" />To Do list</h1>
             <List>
               {[0, 1, 2].map((i) => {

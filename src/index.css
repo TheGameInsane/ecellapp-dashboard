@@ -10,5 +10,18 @@
 }
 
 .widget {
-  @apply bg-black/10 rounded-2xl m-auto mt-10
+  @apply bg-black/10 rounded-2xl m-auto mt-10 xl:block hidden min-w-[90%] hover:scale-103 ease-in-out duration-150
+}
+
+.button {
+  @apply hover:cursor-pointer mx-auto relative w-20 h-20 rounded-full hover:w-22 hover:h-22 ease-in-out duration-150
+}
+
+.visibility {
+  @apply md:block hidden
+}
+
+.h1b {
+  top: calc(50% - 16px);
+  left: calc(50% - 6px);
 }
