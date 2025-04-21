@@ -2,6 +2,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { LocalizationProvider, DateCalendar } from "@mui/x-date-pickers"
 import { List, ListItem, Checkbox, ListItemButton, TableContainer, Table, TableBody, TableRow, TableCell, Paper, TablePagination, IconButton } from "@mui/material"
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import MailIcon from '@mui/icons-material/Mail';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import SunnyIcon from '@mui/icons-material/Sunny';
@@ -9,6 +10,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import HomeFilledIcon from '@mui/icons-material/HomeFilled';
 import SettingsIcon from '@mui/icons-material/Settings';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import ListIcon from '@mui/icons-material/List';
 
 import { useState } from "react";
 
@@ -27,12 +30,86 @@ function App() {
   ]
 
   const butSx = { position: 'absolute', left: 'calc(50% - 13px)', scale: '1.5', top: 'calc(50% - 13px)', color: 'white' }
+  const widgetSx = { position: 'absolute', left: 'calc(50% - 13px)', scale: '1.5', top: 'calc(50% - 13px)', color: 'white' }
+
+  var now = new Date();
+  var curTime = [
+    now.getHours(),
+    ':',
+    now.getMinutes()
+  ].join('');
+
+  var day;
+  switch (now.getDay()) {
+    case 1:
+      day = 'Monday'
+      break;
+    case 2:
+      day = 'Tuesday'
+      break;
+    case 3:
+      day = 'Wednesday'
+      break;
+    case 4:
+      day = 'Thursday'
+      break;
+    case 5:
+      day = 'Friday'
+      break;
+    case 6:
+      day = 'Saturday'
+      break;
+    case 0:
+      day = 'Sunday'
+      break;
+  }
+
+  let monthName = ''
+  switch (now.getMonth() + 1) {
+    case 1:
+      monthName = "January";
+      break;
+    case 2:
+      monthName = "February";
+      break;
+    case 3:
+      monthName = "March";
+      break;
+    case 4:
+      monthName = "April";
+      break;
+    case 5:
+      monthName = "May";
+      break;
+    case 6:
+      monthName = "June";
+      break;
+    case 7:
+      monthName = "July";
+      break;
+    case 8:
+      monthName = "August";
+      break;
+    case 9:
+      monthName = "September";
+      break;
+    case 10:
+      monthName = "October";
+      break;
+    case 11:
+      monthName = "November";
+      break;
+    case 12:
+      monthName = "December";
+      break;
+  }
 
   return (
     <>
       <div className="flex">
-        <div className="h-screen w-50 bg-amber-200">
-          <div className="bg-gray-100/75 h-[95%] m-5 rounded-full w-25 flex flex-col justify-between">
+        {/* Sidebar */}
+        <div className={`h-screen md:w-50 w-30 ${now.getHours() > 6 ? "bg-amber-200" : "bg-[#213448]"}`}>
+          <div className="bg-gray-100/75 h-[95%] m-5 rounded-full md:w-25 w-15 flex flex-col justify-between">
 
             <div className="bg-black/75 button">
               <HomeFilledIcon sx={butSx} />
@@ -42,8 +119,8 @@ function App() {
               <div className="my-4">
                 {[1, 2, 3].map((i) => {
                   return (
-                    <div className={`${i==1 ? "bg-black/20" : "bg-black/5"} button`}>
-                      <h1 className="absolute h1b text-2xl font-semibold text-black/50">{i}</h1>
+                    <div className={`${i == 1 ? "bg-black/20" : "bg-black/5"} button`}>
+                      <h1 className="absolute h1b md:text-2xl text-xl font-semibold text-black/50">{i}</h1>
                     </div>
                   )
                 })}
@@ -58,12 +135,13 @@ function App() {
           </div>
         </div>
 
-        <div className="grid grid-cols-4 grid-rows-4 max-h-screen w-full bg-linear-to-r from-amber-200 to-gray-300">
+        {/* Widgets section */}
+        <div className={`min-h-screen grid lg:grid-cols-4 grid-cols-2 grid-rows-4 max-h-screen w-full bg-linear-to-r ${now.getHours() > 6 ? "from-amber-200" : "from-[#213448]"} to-gray-300 h-full lg:gap-0 gap-15`}>
 
           <div className="col-start-1 col-end-3 row-start-1 row-end-3 m-auto">
             <h1 className="font-inria text-6xl font-semibold text-gray-900"><span className="italic font-normal">Hola</span> Vinay!</h1>
-            <p className="py-2 text-2xl">Wednesday, 25th July<br /><SunnyIcon /> 29°C, Thane</p>
-            <h2 className="text-4xl "><AccessTimeFilledIcon /> 13:24</h2>
+            <p className="py-2 text-2xl">{day}, {now.getDate()} {monthName}<br /><SunnyIcon /> 29°C, Thane</p>
+            <h2 className="text-4xl "><AccessTimeFilledIcon /> {curTime}</h2>
           </div>
 
           <div className="widget min-h-95 relative row-start-3 col-span-2 col-end-5">
@@ -87,11 +165,17 @@ function App() {
             </TableContainer>
             <TablePagination className="absolute right-10 bottom-0" sx={{ border: 'none' }} page={page} rowsPerPageOptions={5} count={mails.length} rowsPerPage={5} onPageChange={handleChangePage} />
           </div>
+          <div className="rounded-full bg-black/25 widgetIcons lg:hidden block">
+            <MailIcon sx={widgetSx} />
+          </div>
 
           <div className="widget w-[90%]">
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DateCalendar sx={{ width: '100%' }} />
             </LocalizationProvider>
+          </div>
+          <div className="rounded-full bg-black/25 widgetIcons lg:hidden block">
+            <CalendarMonthIcon sx={widgetSx} />
           </div>
 
           <div className="widget">
@@ -113,6 +197,9 @@ function App() {
                 </ListItemButton>
               </ListItem>
             </List>
+          </div>
+          <div className="rounded-full bg-black/25 widgetIcons lg:hidden block">
+            <ListIcon sx={widgetSx} />
           </div>
         </div>
 
