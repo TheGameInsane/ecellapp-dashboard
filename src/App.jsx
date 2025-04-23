@@ -8,8 +8,9 @@ import Mail from "./components/Mail";
 import ToDoList from "./components/ToDoList";
 import Calendar from "./components/Calendar";
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import PhotoCameraBackIcon from '@mui/icons-material/PhotoCameraBack';
 import { Modal } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
 
@@ -88,26 +89,34 @@ function App() {
       break;
   }
 
-  const [mailOpen, setMailOpen] = useState(false);
+  const [mailOpen, setMailOpen] = useState(false)
   const handleMailOpen = () => {
     setMailOpen(true);
   }
   const handleMailClose = () => {
     setMailOpen(false);
   }
-  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [calendarOpen, setCalendarOpen] = useState(false)
   const handleCalendarOpen = () => {
     setCalendarOpen(true);
   }
   const handleCalendarClose = () => {
     setCalendarOpen(false);
   }
-  const [todoOpen, setTodoOpen] = useState(false);
+  const [todoOpen, setTodoOpen] = useState(false)
   const handleTodoOpen = () => {
     setTodoOpen(true);
   }
   const handleTodoClose = () => {
     setTodoOpen(false);
+  }
+
+  const [imgOpen, setimgOpen] = useState(false)
+  const handleimgOpen = () => {
+    setimgOpen(true);
+  }
+  const handleimgClose = () => {
+    setimgOpen(false);
   }
 
   let isDay;
@@ -116,6 +125,22 @@ function App() {
   } else {
     isDay = false;
   }
+
+  const [imgNo, setImgNo] = useState(1)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (imgNo == 4) {
+        setImgNo(1);
+      } else {
+        setImgNo(imgNo + 1);
+      }
+    }, 3000); // Change image every 5 seconds
+
+    return () => clearInterval(interval); // Cleanup the interval on component unmount
+  }
+  , [imgNo])
+  const imgSrc = `./${imgNo}.jpeg`
 
   return (
     <>
@@ -175,7 +200,7 @@ function App() {
           >
             <div>
               <div className={`${isDay ? "bg-amber-200" : "bg-[#687b8f]"} rounded-2xl`}>
-              <Mail />
+                <Mail />
               </div>
               <div className="flex justify-end">
                 <button onClick={handleMailClose} className="bg-red-500/75 text-white px-4 py-2 rounded-full my-2">Close</button>
@@ -185,7 +210,7 @@ function App() {
 
           {/* Calendar */}
           <div className="visibility ">
-          <Calendar />
+            <Calendar />
           </div>
           <div className="rounded-full bg-black/25 widgetIcons lg:hidden block" onClick={handleCalendarOpen}>
             <CalendarMonthIcon sx={widgetSx} />
@@ -234,6 +259,30 @@ function App() {
               </div>
             </div>
           </Modal>
+
+
+          <div className={`visibility row-start-3 col-start-1 col-span-2 row-span-2 mx-auto w-85 h-100 bg-[#d3d3d3] shadow-xl transform ${imgNo % 2 == 0 ? "rotate-3" : "-rotate-3"} `}>
+            <img className='m-2' src={imgSrc} alt="" />
+          </div>
+          <div className="rounded-full bg-black/25 widgetIcons lg:hidden block" onClick={handleimgOpen}>
+            <PhotoCameraBackIcon sx={widgetSx} />
+          </div>
+          <Modal
+            open={imgOpen}
+            onClose={handleimgClose}
+            className="flex justify-center items-center"
+            sx={{
+              backdropFilter: 'blur(5px)',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            }}
+          >
+            <div>
+              <div className={`row-start-3 col-start-1 col-span-2 row-span-2 mx-auto w-85 h-100 bg-[#d3d3d3] shadow-xl transform ${imgNo % 2 == 0 ? "rotate-3" : "-rotate-3"} `}>
+                <img className='m-2' src={imgSrc} alt="" />
+              </div>
+            </div>
+          </Modal>
+
         </div>
 
       </div>
