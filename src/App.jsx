@@ -174,7 +174,7 @@ function App() {
             }}
           >
             <div>
-              <div className='bg-amber-200 rounded-2xl'>
+              <div className={`${isDay ? "bg-amber-200" : "bg-[#687b8f]"} rounded-2xl`}>
               <Mail />
               </div>
               <div className="flex justify-end">
@@ -200,7 +200,7 @@ function App() {
             }}
           >
             <div>
-              <div className='bg-amber-200 rounded-2xl'>
+              <div className={`${isDay ? "bg-amber-200" : "bg-[#687b8f]"} rounded-2xl`}>
                 <Calendar />
               </div>
               <div className="flex justify-end">
@@ -226,7 +226,7 @@ function App() {
             }}
           >
             <div>
-              <div className='bg-amber-200 rounded-2xl'>
+              <div className={`${isDay ? "bg-amber-200" : "bg-[#687b8f]"} rounded-2xl`}>
                 <ToDoList />
               </div>
               <div className="flex justify-end">

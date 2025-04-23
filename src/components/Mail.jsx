@@ -18,7 +18,7 @@ const Mail = () => {
     ]
     return (
         <>
-            <div className="lg:min-h-95 min-h-98 relative mb-1">
+            <div className="lg:min-h-95 flex flex-col">
                 <h1 className="text-2xl p-4"><MailOutlineIcon fontSize="large" /> Mails</h1>
                 <TableContainer>
                     <Table>
@@ -37,7 +37,7 @@ const Mail = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <TablePagination className="absolute right-10 bottom-0" sx={{ border: 'none' }} page={page} rowsPerPageOptions={5} count={mails.length} rowsPerPage={5} onPageChange={handleChangePage} />
+                <TablePagination className="" sx={{ border: 'none' }} page={page} rowsPerPageOptions={5} count={mails.length} rowsPerPage={5} onPageChange={handleChangePage} />
             </div>
         </>
     )
