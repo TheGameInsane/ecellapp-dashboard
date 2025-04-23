@@ -1,45 +1,29 @@
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
-import { LocalizationProvider, DateCalendar } from "@mui/x-date-pickers"
-import { List, ListItem, Checkbox, ListItemButton, TableContainer, Table, TableBody, TableRow, TableCell, Paper, TablePagination, IconButton } from "@mui/material"
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import MailIcon from '@mui/icons-material/Mail';
-import TaskAltIcon from '@mui/icons-material/TaskAlt';
-import AddTaskIcon from '@mui/icons-material/AddTask';
 import SunnyIcon from '@mui/icons-material/Sunny';
-import DeleteIcon from '@mui/icons-material/Delete';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
 import HomeFilledIcon from '@mui/icons-material/HomeFilled';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import ListIcon from '@mui/icons-material/List';
-
+import MailIcon from '@mui/icons-material/Mail';
+import Mail from "./components/Mail";
+import ToDoList from "./components/ToDoList";
+import Calendar from "./components/Calendar";
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import { Modal } from "@mui/material";
 import { useState } from "react";
 
 function App() {
-  const [page, setPage] = useState(0)
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-  const mails = [
-    { name: 'Joel George', subject: 'Assignment-2 Graded', timeStamp: `${(new Date(Date.now())).toDateString()}` },
-    { name: 'admin IITM', subject: '10 days vacations approved', timeStamp: `${(new Date(Date.now())).toDateString()}` },
-    { name: 'Joel George', subject: 'Assignment-2 Graded', timeStamp: `${(new Date(Date.now())).toDateString()}` },
-    { name: 'admin IITM', subject: '10 days vacations approved', timeStamp: `${(new Date(Date.now())).toDateString()}` },
-    { name: 'Joel George', subject: 'Assignment-2 Graded', timeStamp: `${(new Date(Date.now())).toDateString()}` },
-    { name: 'admin IITM', subject: '10 days vacations approved', timeStamp: `${(new Date(Date.now())).toDateString()}` },
-  ]
 
   const butSx = { position: 'absolute', left: 'calc(50% - 13px)', scale: '1.5', top: 'calc(50% - 13px)', color: 'white' }
   const widgetSx = { position: 'absolute', left: 'calc(50% - 13px)', scale: '1.5', top: 'calc(50% - 13px)', color: 'white' }
 
-  var now = new Date();
-  var curTime = [
+  let now = new Date()
+  let curTime = [
     now.getHours(),
     ':',
-    now.getMinutes()
+    (now.getMinutes() / 10 < 1 ? `0${now.getMinutes()}` : now.getMinutes())
   ].join('');
 
-  var day;
+  let day
   switch (now.getDay()) {
     case 1:
       day = 'Monday'
@@ -64,7 +48,7 @@ function App() {
       break;
   }
 
-  let monthName = ''
+  let monthName
   switch (now.getMonth() + 1) {
     case 1:
       monthName = "January";
@@ -104,11 +88,40 @@ function App() {
       break;
   }
 
+  const [mailOpen, setMailOpen] = useState(false);
+  const handleMailOpen = () => {
+    setMailOpen(true);
+  }
+  const handleMailClose = () => {
+    setMailOpen(false);
+  }
+  const [calendarOpen, setCalendarOpen] = useState(false);
+  const handleCalendarOpen = () => {
+    setCalendarOpen(true);
+  }
+  const handleCalendarClose = () => {
+    setCalendarOpen(false);
+  }
+  const [todoOpen, setTodoOpen] = useState(false);
+  const handleTodoOpen = () => {
+    setTodoOpen(true);
+  }
+  const handleTodoClose = () => {
+    setTodoOpen(false);
+  }
+
+  let isDay;
+  if (now.getHours() > 6 && now.getHours() < 18) {
+    isDay = true;
+  } else {
+    isDay = false;
+  }
+
   return (
     <>
       <div className="flex">
         {/* Sidebar */}
-        <div className={`h-screen md:w-50 w-30 ${now.getHours() > 6 ? "bg-amber-200" : "bg-[#213448]"}`}>
+        <div className={`h-screen md:w-50 w-30 ${isDay ? "bg-amber-200" : "bg-[#213448]"}`}>
           <div className="bg-gray-100/75 h-[95%] m-5 rounded-full md:w-25 w-15 flex flex-col justify-between">
 
             <div className="bg-black/75 button">
@@ -136,7 +149,7 @@ function App() {
         </div>
 
         {/* Widgets section */}
-        <div className={`min-h-screen grid lg:grid-cols-4 grid-cols-2 grid-rows-4 max-h-screen w-full bg-linear-to-r ${now.getHours() > 6 ? "from-amber-200" : "from-[#213448]"} to-gray-300 h-full lg:gap-0 gap-15`}>
+        <div className={`min-h-screen grid lg:grid-cols-4 grid-cols-2 grid-rows-4 max-h-screen w-full bg-linear-to-r ${isDay ? "from-amber-200" : "from-[#213448]"} to-gray-300 h-full lg:gap-0 gap-15`}>
 
           <div className="col-start-1 col-end-3 row-start-1 row-end-3 m-auto">
             <h1 className="font-inria text-6xl font-semibold text-gray-900"><span className="italic font-normal">Hola</span> Vinay!</h1>
@@ -144,63 +157,83 @@ function App() {
             <h2 className="text-4xl "><AccessTimeFilledIcon /> {curTime}</h2>
           </div>
 
-          <div className="widget min-h-95 relative row-start-3 col-span-2 col-end-5">
-            <h1 className="text-2xl p-4"><MailOutlineIcon fontSize="large" /> Mails</h1>
-            <TableContainer>
-              <Table>
-                <TableBody>
-                  {
-                    mails.slice(page * 5, page * 5 + 5).map((mail) => {
-                      return (
-                        <TableRow hover sx={{ cursor: 'pointer' }}>
-                          <TableCell sx={{ border: 'none' }}><span className="font-bold">{mail.name}</span></TableCell>
-                          <TableCell sx={{ border: 'none' }}>{mail.subject}</TableCell>
-                          <TableCell sx={{ border: 'none' }}>{mail.timeStamp}</TableCell>
-                        </TableRow>
-                      )
-                    })
-                  }
-                </TableBody>
-              </Table>
-            </TableContainer>
-            <TablePagination className="absolute right-10 bottom-0" sx={{ border: 'none' }} page={page} rowsPerPageOptions={5} count={mails.length} rowsPerPage={5} onPageChange={handleChangePage} />
+          {/* Mail */}
+          <div className='visibility widget row-start-3 col-span-2 col-end-5'>
+            <Mail />
           </div>
-          <div className="rounded-full bg-black/25 widgetIcons lg:hidden block">
+          <div className="rounded-full bg-black/25 widgetIcons lg:hidden block" onClick={handleMailOpen}>
             <MailIcon sx={widgetSx} />
           </div>
+          <Modal
+            open={mailOpen}
+            onClose={handleMailClose}
+            className="flex justify-center items-center"
+            sx={{
+              backdropFilter: 'blur(5px)',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            }}
+          >
+            <div>
+              <div className='bg-amber-200 rounded-2xl'>
+              <Mail />
+              </div>
+              <div className="flex justify-end">
+                <button onClick={handleMailClose} className="bg-red-500/75 text-white px-4 py-2 rounded-full my-2">Close</button>
+              </div>
+            </div>
+          </Modal>
 
-          <div className="widget w-[90%]">
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DateCalendar sx={{ width: '100%' }} />
-            </LocalizationProvider>
+          {/* Calendar */}
+          <div className="visibility ">
+          <Calendar />
           </div>
-          <div className="rounded-full bg-black/25 widgetIcons lg:hidden block">
+          <div className="rounded-full bg-black/25 widgetIcons lg:hidden block" onClick={handleCalendarOpen}>
             <CalendarMonthIcon sx={widgetSx} />
           </div>
+          <Modal
+            open={calendarOpen}
+            onClose={handleCalendarClose}
+            className="flex justify-center items-center"
+            sx={{
+              backdropFilter: 'blur(5px)',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            }}
+          >
+            <div>
+              <div className='bg-amber-200 rounded-2xl'>
+                <Calendar />
+              </div>
+              <div className="flex justify-end">
+                <button onClick={handleCalendarClose} className="bg-red-500/75 text-white px-4 py-2 rounded-full my-2">Close</button>
+              </div>
+            </div>
+          </Modal>
 
-          <div className="widget">
-            <h1 className="text-2xl pt-2"><TaskAltIcon fontSize="large" className="m-2" />To Do list</h1>
-            <List>
-              {[0, 1, 2].map((i) => {
-                return (
-                  <ListItem disableGutters disablePadding>
-                    <ListItemButton >
-                      <h1><Checkbox />E-Cell WMO</h1>
-                    </ListItemButton>
-                    <IconButton><DeleteIcon /></IconButton>
-                  </ListItem>
-                )
-              })}
-              <ListItem disableGutters>
-                <ListItemButton>
-                  <h1 className="flex"><AddTaskIcon fontSize="medium" className="mx-2" />Add Task</h1>
-                </ListItemButton>
-              </ListItem>
-            </List>
+          {/* ToDoList */}
+          <div className="visibility widget">
+            <ToDoList />
           </div>
-          <div className="rounded-full bg-black/25 widgetIcons lg:hidden block">
-            <ListIcon sx={widgetSx} />
+          <div className="rounded-full bg-black/25 widgetIcons lg:hidden block" onClick={handleTodoOpen}>
+            <TaskAltIcon sx={widgetSx} />
           </div>
+          <Modal
+            open={todoOpen}
+            onClose={handleTodoClose}
+            className="flex justify-center items-center"
+            sx={{
+              backdropFilter: 'blur(5px)',
+              backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            }}
+          >
+            <div>
+              <div className='bg-amber-200 rounded-2xl'>
+                <ToDoList />
+              </div>
+              <div className="flex justify-end">
+                <button onClick={handleTodoClose} className="bg-red-500/75 text-white px-4 py-2 rounded-full my-2">Close</button>
+              </div>
+            </div>
+          </Modal>
         </div>
 
       </div>

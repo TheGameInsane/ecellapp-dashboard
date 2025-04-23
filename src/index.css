@@ -10,11 +10,11 @@
 }
 
 .widget {
-  @apply bg-black/10 rounded-2xl m-auto mt-10 lg:block hidden min-w-[90%] hover:scale-103 ease-in-out duration-150
+  @apply bg-black/10 rounded-2xl m-auto lg:mt-10 lg:min-w-[90%] lg:hover:scale-103 ease-in-out duration-150
 }
 
 .button {
-  @apply hover:cursor-pointer mx-auto relative md:w-20 md:h-20 w-15 h-15 rounded-full hover:w-22 hover:h-22 ease-in-out duration-150
+  @apply lg:hover:cursor-pointer mx-auto relative md:w-20 md:h-20 w-15 h-15 rounded-full lg:hover:w-22 lg:hover:h-22 ease-in-out duration-150
 }
 
 .widgetIcons {
@@ -22,7 +22,7 @@
 }
 
 .visibility {
-  @apply md:block hidden
+  @apply lg:block hidden
 }
 
 .h1b {
